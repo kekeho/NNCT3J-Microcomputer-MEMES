@@ -1,4 +1,4 @@
-Optimizing Linkage Editor (V.10.02.01.000)        30-Jan-2018 13:53:17
+Optimizing Linkage Editor (V.10.02.01.000)        30-Jan-2018 14:11:11
 
 *** Options ***
 
@@ -22,6 +22,8 @@ Optimizing Linkage Editor (V.10.02.01.000)        30-Jan-2018 13:53:17
 
 *** Error information ***
 
+** L1100 (W) Cannot find "C" specified in option "start"
+
 *** Mapping List ***
 
 SECTION                            START      END         SIZE   ALIGN
@@ -35,15 +37,13 @@ PIntPRG
 PResetPRG
                                   04000800  0400082f        30   4
 P
-                                  04001000  0400150f       510   4
-C
-                                  04001510  04001523        14   4
+                                  04001000  040014db       4dc   4
 C$BSEC
-                                  04001524  0400152b         8   4
+                                  040014dc  040014e3         8   4
 C$DSEC
-                                  0400152c  04001537         c   4
+                                  040014e4  040014ef         c   4
 D
-                                  04001538  0400153f         8   4
+                                  040014f0  040014f7         8   4
 B
                                   04020000  040203ff       400   4
 R

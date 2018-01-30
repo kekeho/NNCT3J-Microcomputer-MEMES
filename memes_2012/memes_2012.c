@@ -136,9 +136,6 @@ void move_me(struct position *me)
 
 	old_position.x = me->x;
 	old_position.y = me->y;
-	
-	printf("x: %d, y: %d\n", me->x, me->y);
-	printf("%d\n", AD0.ADDR1);
 
 	if (AD0.ADDR0 < 0x4000) {
 		// -- ジョイスティック上 --
