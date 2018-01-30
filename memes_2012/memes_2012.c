@@ -180,12 +180,16 @@ void move_me(struct position *me)
 
 
 // -- 岩を移動 --
-void move_rock(struct position rock[])
+void move_rock(struct position rock[], struct position me)
 {
 	int i;
 
 	for (i = 0; i < NMROF_ROCKS; i++) {
 		if (rock[i].active) {
+			if(rock[i].x == me.x && rock[i].y == me.y){
+				point -= 5;
+				printf("\rAwwww!\r");
+			}
 			// 画面上に岩が存在する
 			LCD_cursor(rock[i].x, rock[i].y);
 			LCD_putch(' ');
@@ -220,21 +224,6 @@ void new_rock(struct position rock[])
 			break;
 		}
 	}
-}
-
-
-// 当たり判定
-Boolean boom(int x1, int y1, int x2, int y2){
-  if (flag == False && x1 == x2 && y1 == y2) {
-	flag = True;
-    return True;
-  } else if (flag == True && x1 == x2 && y1 == y2){
-	flag = False;
-	return False;
-  } else {
-	flag = False;
-    return False;
-  }
 }
 
 void init_peior(void) {
@@ -292,7 +281,7 @@ void main(){
 			rock[i].active = 0;
 
 		move_timing = new_timing = 0;
-	
+		
 		//SW6でゲーム開始
 		if (SW6){
 			printf("START\n");
@@ -336,7 +325,7 @@ void main(){
 					move_me(&me);			// 自分移動
 					if (move_timing++ >= 2) {
 						move_timing = 0;
-						move_rock(rock);	// 岩を移動
+						move_rock(rock, me);	// 岩を移動
 						if (new_timing-- <= 0) {
 							new_timing = rand() * 5 / (RAND_MAX + 1);
 							new_rock(rock);		// 新しい岩が出現
