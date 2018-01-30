@@ -1,4 +1,0 @@
--cpu=sh2
--output="C:\WorkSpace\memes_2012\memes_2012\Debug\memes_2012.lib"
--gbr=auto
--head=runtime,new,stdio,stdlib,string
