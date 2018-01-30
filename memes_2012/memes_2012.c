@@ -39,6 +39,8 @@ struct position {
   int y;
   int active;
 };
+int point;
+int flag = 0;
 
 void wait_us(_UINT);
 void LCD_inst(_SBYTE);
@@ -186,6 +188,8 @@ void move_rock(struct position rock[])
 			LCD_cursor(rock[i].x, rock[i].y);
 			LCD_putch(' ');
 			if (rock[i].x == 0) {
+				point += 1;
+				printf(" \rPOINTS: %d", point);
 				// 消去
 				rock[i].active = 0;
 			} else {
@@ -219,9 +223,14 @@ void new_rock(struct position rock[])
 
 // 当たり判定
 Boolean boom(int x1, int y1, int x2, int y2){
-  if (x1 == x2 && y1 == y2) {
+  if (flag == False && x1 == x2 && y1 == y2) {
+	flag = True;
     return True;
+  } else if (flag == True && x1 == x2 && y1 == y2){
+	flag = False;
+	return False;
   } else {
+	flag = False;
     return False;
   }
 }
@@ -235,7 +244,8 @@ void main(){
 		struct position rock[NMROF_ROCKS];	// 岩の座標
 		int move_timing, new_timing;
 		int ad, i;
-    int point = 0;
+		point = 0;
+		flag = False;
 
 		STB.CR4.BIT._AD0 = 0;
 		STB.CR4.BIT._CMT = 0;
@@ -273,6 +283,7 @@ void main(){
 	
 		//SW6でゲーム開始
 		if (SW6){
+			printf("START\n");
 			while (1) {
 				//SW5が押されて...
 				if(SW5){
@@ -280,6 +291,7 @@ void main(){
 						//SW5が離されたら
 						if(!SW5){
 							//一時停止中
+							printf("\r                       \rPAUSE");
 							while(1){
 								//もう一度押されたら再開
 								if(SW6){
@@ -294,6 +306,7 @@ void main(){
 				}
 				//SW4でリセット
 				if(SW4){
+					printf("\nSEE YA!\n");
 					break;
 				}
 				if (MTU21.TSR.BIT.TGFA) {
@@ -310,14 +323,6 @@ void main(){
 						}
 					}
 				}
-        //自分と岩の位置把握
-        for (int i = 0; i < NMROF_ROCKS; i++) {
-          //岩に当たったら
-          if (boom(me.x, me.y, rock[i].x, rock[i].y)) {
-            point -= 1;
-            printf("awwww!\n");
-          }
-        }
 			}
 		}
 	}
