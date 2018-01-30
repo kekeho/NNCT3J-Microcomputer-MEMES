@@ -50,6 +50,8 @@ void LCD_putch(_SBYTE);
 void LCD_putstr(_SBYTE *);
 void LCD_cls(void);
 void LCD_init(void);
+void init_peior(void);
+void init_paior(void);
 
 
 // --------------------
@@ -235,6 +237,13 @@ Boolean boom(int x1, int y1, int x2, int y2){
   }
 }
 
+void init_peior(void) {
+  PFC.PEIORL.BIT.B3 = 1;
+}
+void init_paior(void) {
+  PFC.PAIORH.BYTE.L |= 0x0F;
+}
+
 
 // --------------------------------------------
 // -- メイン関数 --
@@ -274,7 +283,10 @@ void main(){
 
 		MTU2.TSTR.BIT.CST0 = 1;			// MTU2 CH0スタート
 		MTU2.TSTR.BIT.CST1 = 1;			// MTU2 CH1スタート
-
+		
+		init_peior();
+		init_paior();
+		
 		me.x = me.y = 0;
 		for (i = 0; i < NMROF_ROCKS; i++)
 			rock[i].active = 0;
@@ -285,6 +297,9 @@ void main(){
 		if (SW6){
 			printf("START\n");
 			while (1) {
+				PA.DR.BYTE.HL &= 0xF0;
+				PA.DR.BYTE.HL |= point;
+				DIG1 = 1;
 				//SW5が押されて...
 				if(SW5){
 					while(1){
@@ -307,6 +322,11 @@ void main(){
 				//SW4でリセット
 				if(SW4){
 					printf("\nSEE YA!\n");
+					break;
+				}
+				if(point > 9){
+					//claer
+					printf("\nCLEAR!\n");
 					break;
 				}
 				if (MTU21.TSR.BIT.TGFA) {
