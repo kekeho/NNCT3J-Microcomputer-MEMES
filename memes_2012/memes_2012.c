@@ -28,6 +28,10 @@
 #define LCD_RW		(PD.DR.BIT.B23)
 #define LCD_DATA	(PD.DR.BYTE.HH)
 
+#define Boolean int
+#define True 1
+#define False 0
+
 #define	NMROF_ROCKS	6
 
 struct position {
@@ -213,6 +217,16 @@ void new_rock(struct position rock[])
 }
 
 
+// ìñÇΩÇËîªíË
+Boolean boom(int x1, int y1, int x2, int y2){
+  if (x1 == x2 && y1 == y2) {
+    return True;
+  } else {
+    return False;
+  }
+}
+
+
 // --------------------------------------------
 // -- ÉÅÉCÉìä÷êî --
 void main(){
@@ -221,6 +235,7 @@ void main(){
 		struct position rock[NMROF_ROCKS];	// ä‚ÇÃç¿ïW
 		int move_timing, new_timing;
 		int ad, i;
+    int point = 0;
 
 		STB.CR4.BIT._AD0 = 0;
 		STB.CR4.BIT._CMT = 0;
@@ -295,7 +310,9 @@ void main(){
 						}
 					}
 				}
-			}
-		}
-	}
-}
+        //é©ï™Ç∆ä‚ÇÃà íuîcà¨
+        for (int i = 0; i < NMROF_ROCKS; i++) {
+          //ä‚Ç…ìñÇΩÇ¡ÇΩÇÁ
+          if (boom(me.x, me.y, rock[i].x, rock[i].y)) {
+            point -= 1;
+            printf("awwww!
