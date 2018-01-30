@@ -215,58 +215,85 @@ void new_rock(struct position rock[])
 
 // --------------------------------------------
 // -- メイン関数 --
-void main()
-{
-	struct position me;					// 自分の車の座標
-	struct position rock[NMROF_ROCKS];	// 岩の座標
-	int move_timing, new_timing;
-	int ad, i;
+void main(){
+	while(1){
+		struct position me;					// 自分の車の座標
+		struct position rock[NMROF_ROCKS];	// 岩の座標
+		int move_timing, new_timing;
+		int ad, i;
 
-	STB.CR4.BIT._AD0 = 0;
-	STB.CR4.BIT._CMT = 0;
-	STB.CR4.BIT._MTU2 = 0;
+		STB.CR4.BIT._AD0 = 0;
+		STB.CR4.BIT._CMT = 0;
+		STB.CR4.BIT._MTU2 = 0;
 
-	CMT0.CMCSR.BIT.CKS = 1;
+		CMT0.CMCSR.BIT.CKS = 1;
 
-	// MTU2 ch0
-	MTU20.TCR.BIT.TPSC = 3;			// 1/64選択
-	MTU20.TCR.BIT.CCLR = 1;			// TGRAのコンペアマッチでクリア
-	MTU20.TGRA = 31250 - 1;			// 100ms
-	MTU20.TIER.BIT.TTGE = 1;		// A/D変換開始要求を許可
+		// MTU2 ch0
+		MTU20.TCR.BIT.TPSC = 3;			// 1/64選択
+		MTU20.TCR.BIT.CCLR = 1;			// TGRAのコンペアマッチでクリア
+		MTU20.TGRA = 31250 - 1;			// 100ms
+		MTU20.TIER.BIT.TTGE = 1;		// A/D変換開始要求を許可
 
-	// AD0
-	AD0.ADCSR.BIT.ADM = 3;			// 2チャンネルスキャンモード
-	AD0.ADCSR.BIT.CH = 1;			// AN0
-	AD0.ADCSR.BIT.TRGE = 1;			// MTU2からのトリガ有効
-	AD0.ADTSR.BIT.TRG0S = 1;		// TGRAコンペアマッチでトリガ
+		// AD0
+		AD0.ADCSR.BIT.ADM = 3;			// 2チャンネルスキャンモード
+		AD0.ADCSR.BIT.CH = 1;			// AN0
+		AD0.ADCSR.BIT.TRGE = 1;			// MTU2からのトリガ有効
+		AD0.ADTSR.BIT.TRG0S = 1;		// TGRAコンペアマッチでトリガ
 
-	// MTU2 ch1
-	MTU21.TCR.BIT.TPSC = 3;			// 1/64選択
-	MTU21.TCR.BIT.CCLR = 1;			// TGRAのコンペアマッチでクリア
-	MTU21.TGRA = 31250 - 1;			// 100ms
+		// MTU2 ch1
+		MTU21.TCR.BIT.TPSC = 3;			// 1/64選択
+		MTU21.TCR.BIT.CCLR = 1;			// TGRAのコンペアマッチでクリア
+		MTU21.TGRA = 31250 - 1;			// 100ms
 
-	LCD_init();
+		LCD_init();
 
-	MTU2.TSTR.BIT.CST0 = 1;			// MTU2 CH0スタート
-	MTU2.TSTR.BIT.CST1 = 1;			// MTU2 CH1スタート
+		MTU2.TSTR.BIT.CST0 = 1;			// MTU2 CH0スタート
+		MTU2.TSTR.BIT.CST1 = 1;			// MTU2 CH1スタート
 
-	me.x = me.y = 0;
-	for (i = 0; i < NMROF_ROCKS; i++)
-		rock[i].active = 0;
+		me.x = me.y = 0;
+		for (i = 0; i < NMROF_ROCKS; i++)
+			rock[i].active = 0;
 
-	move_timing = new_timing = 0;
-	while (1) {
-		if (MTU21.TSR.BIT.TGFA) {
-			// MTU2 ch1 コンペアマッチ発生(100ms毎)
-			MTU21.TSR.BIT.TGFA = 0;	// フラグクリア
+		move_timing = new_timing = 0;
+	
+		//SW6でゲーム開始
+		if (SW6){
+			while (1) {
+				//SW5が押されて...
+				if(SW5){
+					while(1){
+						//SW5が離されたら
+						if(!SW5){
+							//一時停止中
+							while(1){
+								//もう一度押されたら再開
+								if(SW6){
+									break;
+								}
+							}
+						}
+						if(SW6){
+							break;
+						}
+					}
+				}
+				//SW4でリセット
+				if(SW4){
+					break;
+				}
+				if (MTU21.TSR.BIT.TGFA) {
+					// MTU2 ch1 コンペアマッチ発生(100ms毎)
+					MTU21.TSR.BIT.TGFA = 0;	// フラグクリア
 
-			move_me(&me);			// 自分移動
-			if (move_timing++ >= 2) {
-				move_timing = 0;
-				move_rock(rock);	// 岩を移動
-				if (new_timing-- <= 0) {
-					new_timing = rand() * 5 / (RAND_MAX + 1);
-					new_rock(rock);		// 新しい岩が出現
+					move_me(&me);			// 自分移動
+					if (move_timing++ >= 2) {
+						move_timing = 0;
+						move_rock(rock);	// 岩を移動
+						if (new_timing-- <= 0) {
+							new_timing = rand() * 5 / (RAND_MAX + 1);
+							new_rock(rock);		// 新しい岩が出現
+						}
+					}
 				}
 			}
 		}
