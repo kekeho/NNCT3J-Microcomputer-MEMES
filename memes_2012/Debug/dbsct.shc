@@ -1,10 +1,10 @@
 -cpu=sh2
--object="C:\WorkSpace\memes_2012\memes_2012\Debug\dbsct.obj"
+-object="C:\Users\Student\Desktop\NNCT3J-Microcomputer-MEMES\memes_2012\Debug\dbsct.obj"
 -debug
 -gbr=auto
 -chgincpath
 -errorpath
-"C:\WorkSpace\memes_2012\memes_2012\dbsct.c"
+"C:\Users\Student\Desktop\NNCT3J-Microcomputer-MEMES\memes_2012\dbsct.c"
 -global_volatile=0
 -opt_range=all
 -infinite_loop=0

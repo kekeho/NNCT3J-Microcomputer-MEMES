@@ -1,0 +1,52 @@
+Optimizing Linkage Editor (V.10.02.01.000)        30-Jan-2018 14:24:20
+
+*** Options ***
+
+-subcommand=C:\Users\Student\Desktop\NNCT3J-Microcomputer-MEMES\memes_2012\Debug\memes_2012.hlk
+-noprelink
+-rom=D=R
+-nomessage
+-list="C:\Users\Student\Desktop\NNCT3J-Microcomputer-MEMES\memes_2012\Debug\memes_2012.map"
+-nooptimize
+-start=DVECTTBL,DINTTBL,PIntPRG/04000000,PResetPRG/04000800,P,C,C$BSEC,C$DSEC,D/04001000,B,R/04020000,S/04030000
+-nologo
+-input="C:\Users\Student\Desktop\NNCT3J-Microcomputer-MEMES\memes_2012\Debug\dbsct.obj"
+-input="C:\Users\Student\Desktop\NNCT3J-Microcomputer-MEMES\memes_2012\Debug\intprg.obj"
+-input="C:\Users\Student\Desktop\NNCT3J-Microcomputer-MEMES\memes_2012\Debug\memes_2012.obj"
+-input="C:\Users\Student\Desktop\NNCT3J-Microcomputer-MEMES\memes_2012\Debug\resetprg.obj"
+-input="C:\Users\Student\Desktop\NNCT3J-Microcomputer-MEMES\memes_2012\Debug\sbrk.obj"
+-input="C:\Users\Student\Desktop\NNCT3J-Microcomputer-MEMES\memes_2012\Debug\vecttbl.obj"
+-library="C:\Users\Student\Desktop\NNCT3J-Microcomputer-MEMES\memes_2012\Debug\memes_2012.lib"
+-output="C:\Users\Student\Desktop\NNCT3J-Microcomputer-MEMES\memes_2012\Debug\memes_2012.abs"
+-end
+
+*** Error information ***
+
+** L1100 (W) Cannot find "C" specified in option "start"
+
+*** Mapping List ***
+
+SECTION                            START      END         SIZE   ALIGN
+
+DVECTTBL
+                                  04000000  0400000f        10   4
+DINTTBL
+                                  04000010  040003ff       3f0   4
+PIntPRG
+                                  04000400  040005f7       1f8   4
+PResetPRG
+                                  04000800  0400082f        30   4
+P
+                                  04001000  040014e3       4e4   4
+C$BSEC
+                                  040014e4  040014eb         8   4
+C$DSEC
+                                  040014ec  040014f7         c   4
+D
+                                  040014f8  040014ff         8   4
+B
+                                  04020000  040203ff       400   4
+R
+                                  04020400  04020407         8   4
+S
+                                  04030000  040303ff       400   4

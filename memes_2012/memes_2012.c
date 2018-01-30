@@ -144,8 +144,24 @@ void move_me(struct position *me)
 		// -- ジョイスティック下 --
 		me->y = 1;
 	}
+	
+	if (AD0.ADDR1 < 0x4000) {
+		 //-- ジョイスティック右 --
+		if(me->x >= 15){
+			me->x = 15;
+		} else {
+			me->x += 1;
+		}
+	} else if (AD0.ADDR1 > 0xc000) {
+		 //-- ジョイスティック左 --
+		if(me->x <= 0){
+			me->x = 0;
+		} else {
+			me->x -= 1;
+		}
+	}
 
-	if (old_position.y != me->y) {
+	if (old_position.y != me->y || old_position.x != me->x) {
 		// -- 移動したとき .. 古い表示を消す --
 		LCD_cursor(old_position.x, old_position.y);
 		LCD_putch(' ');
@@ -219,8 +235,8 @@ void main()
 	MTU20.TIER.BIT.TTGE = 1;		// A/D変換開始要求を許可
 
 	// AD0
-	AD0.ADCSR.BIT.ADM = 0;			// シングルモード
-	AD0.ADCSR.BIT.CH = 0;			// AN0
+	AD0.ADCSR.BIT.ADM = 3;			// 2チャンネルスキャンモード
+	AD0.ADCSR.BIT.CH = 1;			// AN0
 	AD0.ADCSR.BIT.TRGE = 1;			// MTU2からのトリガ有効
 	AD0.ADTSR.BIT.TRG0S = 1;		// TGRAコンペアマッチでトリガ
 
@@ -239,18 +255,22 @@ void main()
 		rock[i].active = 0;
 
 	move_timing = new_timing = 0;
-	while (1) {
-		if (MTU21.TSR.BIT.TGFA) {
-			// MTU2 ch1 コンペアマッチ発生(100ms毎)
-			MTU21.TSR.BIT.TGFA = 0;	// フラグクリア
+	while(1){
+		if (SW6){
+			while (1) {
+				if (MTU21.TSR.BIT.TGFA) {
+					// MTU2 ch1 コンペアマッチ発生(100ms毎)
+					MTU21.TSR.BIT.TGFA = 0;	// フラグクリア
 
-			move_me(&me);			// 自分移動
-			if (move_timing++ >= 2) {
-				move_timing = 0;
-				move_rock(rock);	// 岩を移動
-				if (new_timing-- <= 0) {
-					new_timing = rand() * 5 / (RAND_MAX + 1);
-					new_rock(rock);		// 新しい岩が出現
+					move_me(&me);			// 自分移動
+					if (move_timing++ >= 2) {
+						move_timing = 0;
+						move_rock(rock);	// 岩を移動
+						if (new_timing-- <= 0) {
+							new_timing = rand() * 5 / (RAND_MAX + 1);
+							new_rock(rock);		// 新しい岩が出現
+						}
+					}
 				}
 			}
 		}
