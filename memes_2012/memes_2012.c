@@ -256,8 +256,27 @@ void main()
 
 	move_timing = new_timing = 0;
 	while(1){
+		//SW6でゲーム開始
 		if (SW6){
 			while (1) {
+				//SW5が押されて...
+				if(SW5){
+					while(1){
+						//SW5が離されたら
+						if(!SW5){
+							//一時停止中
+							while(1){
+								//もう一度押されたら再開
+								if(SW6){
+									break;
+								}
+							}
+						}
+						if(SW6){
+							break;
+						}
+					}
+				}
 				if (MTU21.TSR.BIT.TGFA) {
 					// MTU2 ch1 コンペアマッチ発生(100ms毎)
 					MTU21.TSR.BIT.TGFA = 0;	// フラグクリア
