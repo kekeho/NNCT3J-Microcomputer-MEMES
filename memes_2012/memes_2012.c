@@ -1,5 +1,5 @@
 /*
- * memes_2012.c : 2012”N“xMEMEs‘‡‰‰K
+ * memes_2012.c : 2012å¹´åº¦MEMEsç·åˆæ¼”ç¿’
  *
  */
 
@@ -51,7 +51,7 @@ void LCD_init(void);
 
 
 // --------------------
-// -- g—p‚·‚éŠÖ”ŒQ --
+// -- ä½¿ç”¨ã™ã‚‹é–¢æ•°ç¾¤ --
 // --------------------
 void wait_us(_UINT us) {
 	_UINT val;
@@ -131,9 +131,9 @@ void LCD_init(void) {
 }
 
 // --------------------------------------------
-// -- ƒQ[ƒ€—p‚ÌŠÖ”ŒQ --
+// -- ã‚²ãƒ¼ãƒ ç”¨ã®é–¢æ•°ç¾¤ --
 
-// -- ©•ª‚ğˆÚ“® --
+// -- è‡ªåˆ†ã‚’ç§»å‹• --
 void move_me(struct position *me)
 {
 	struct position old_position;
@@ -142,22 +142,22 @@ void move_me(struct position *me)
 	old_position.y = me->y;
 
 	if (AD0.ADDR0 < 0x4000) {
-		// -- ƒWƒ‡ƒCƒXƒeƒBƒbƒNã --
+		// -- ã‚¸ãƒ§ã‚¤ã‚¹ãƒ†ã‚£ãƒƒã‚¯ä¸Š --
 		me->y = 0;
 	} else if (AD0.ADDR0 > 0xc000) {
-		// -- ƒWƒ‡ƒCƒXƒeƒBƒbƒN‰º --
+		// -- ã‚¸ãƒ§ã‚¤ã‚¹ãƒ†ã‚£ãƒƒã‚¯ä¸‹ --
 		me->y = 1;
 	}
 	
 	if (AD0.ADDR1 < 0x4000) {
-		 //-- ƒWƒ‡ƒCƒXƒeƒBƒbƒN‰E --
+		 //-- ã‚¸ãƒ§ã‚¤ã‚¹ãƒ†ã‚£ãƒƒã‚¯å³ --
 		if(me->x >= 15){
 			me->x = 15;
 		} else {
 			me->x += 1;
 		}
 	} else if (AD0.ADDR1 > 0xc000) {
-		 //-- ƒWƒ‡ƒCƒXƒeƒBƒbƒN¶ --
+		 //-- ã‚¸ãƒ§ã‚¤ã‚¹ãƒ†ã‚£ãƒƒã‚¯å·¦ --
 		if(me->x <= 0){
 			me->x = 0;
 		} else {
@@ -166,7 +166,7 @@ void move_me(struct position *me)
 	}
 
 	if (old_position.y != me->y || old_position.x != me->x) {
-		// -- ˆÚ“®‚µ‚½‚Æ‚« .. ŒÃ‚¢•\¦‚ğÁ‚· --
+		// -- ç§»å‹•ã—ãŸã¨ã .. å¤ã„è¡¨ç¤ºã‚’æ¶ˆã™ --
 		LCD_cursor(old_position.x, old_position.y);
 		LCD_putch(' ');
 	}
@@ -175,18 +175,18 @@ void move_me(struct position *me)
 }
 
 
-// -- Šâ‚ğˆÚ“® --
+// -- å²©ã‚’ç§»å‹• --
 void move_rock(struct position rock[])
 {
 	int i;
 
 	for (i = 0; i < NMROF_ROCKS; i++) {
 		if (rock[i].active) {
-			// ‰æ–Êã‚ÉŠâ‚ª‘¶İ‚·‚é
+			// ç”»é¢ä¸Šã«å²©ãŒå­˜åœ¨ã™ã‚‹
 			LCD_cursor(rock[i].x, rock[i].y);
 			LCD_putch(' ');
 			if (rock[i].x == 0) {
-				// Á‹
+				// æ¶ˆå»
 				rock[i].active = 0;
 			} else {
 				rock[i].x--;
@@ -198,14 +198,14 @@ void move_rock(struct position rock[])
 }
 
 
-// -- V‚µ‚¢Šâ‚ğì‚é --
+// -- æ–°ã—ã„å²©ã‚’ä½œã‚‹ --
 void new_rock(struct position rock[])
 {
 	int i;
 
 	for (i = 0; i < NMROF_ROCKS; i++) {
 		if (rock[i].active == 0) {
-			// -- V‚µ‚¢Šâ --
+			// -- æ–°ã—ã„å²© --
 			rock[i].active = 1;
 			rock[i].x = 15;
 			rock[i].y = rand() % 2;
@@ -217,7 +217,7 @@ void new_rock(struct position rock[])
 }
 
 
-// “–‚½‚è”»’è
+// å½“ãŸã‚Šåˆ¤å®š
 Boolean boom(int x1, int y1, int x2, int y2){
   if (x1 == x2 && y1 == y2) {
     return True;
@@ -228,11 +228,11 @@ Boolean boom(int x1, int y1, int x2, int y2){
 
 
 // --------------------------------------------
-// -- ƒƒCƒ“ŠÖ” --
+// -- ãƒ¡ã‚¤ãƒ³é–¢æ•° --
 void main(){
 	while(1){
-		struct position me;					// ©•ª‚ÌÔ‚ÌÀ•W
-		struct position rock[NMROF_ROCKS];	// Šâ‚ÌÀ•W
+		struct position me;					// è‡ªåˆ†ã®è»Šã®åº§æ¨™
+		struct position rock[NMROF_ROCKS];	// å²©ã®åº§æ¨™
 		int move_timing, new_timing;
 		int ad, i;
     int point = 0;
@@ -244,26 +244,26 @@ void main(){
 		CMT0.CMCSR.BIT.CKS = 1;
 
 		// MTU2 ch0
-		MTU20.TCR.BIT.TPSC = 3;			// 1/64‘I‘ğ
-		MTU20.TCR.BIT.CCLR = 1;			// TGRA‚ÌƒRƒ“ƒyƒAƒ}ƒbƒ`‚ÅƒNƒŠƒA
+		MTU20.TCR.BIT.TPSC = 3;			// 1/64é¸æŠ
+		MTU20.TCR.BIT.CCLR = 1;			// TGRAã®ã‚³ãƒ³ãƒšã‚¢ãƒãƒƒãƒã§ã‚¯ãƒªã‚¢
 		MTU20.TGRA = 31250 - 1;			// 100ms
-		MTU20.TIER.BIT.TTGE = 1;		// A/D•ÏŠ·ŠJn—v‹‚ğ‹–‰Â
+		MTU20.TIER.BIT.TTGE = 1;		// A/Då¤‰æ›é–‹å§‹è¦æ±‚ã‚’è¨±å¯
 
 		// AD0
-		AD0.ADCSR.BIT.ADM = 3;			// 2ƒ`ƒƒƒ“ƒlƒ‹ƒXƒLƒƒƒ“ƒ‚[ƒh
+		AD0.ADCSR.BIT.ADM = 3;			// 2ãƒãƒ£ãƒ³ãƒãƒ«ã‚¹ã‚­ãƒ£ãƒ³ãƒ¢ãƒ¼ãƒ‰
 		AD0.ADCSR.BIT.CH = 1;			// AN0
-		AD0.ADCSR.BIT.TRGE = 1;			// MTU2‚©‚ç‚ÌƒgƒŠƒK—LŒø
-		AD0.ADTSR.BIT.TRG0S = 1;		// TGRAƒRƒ“ƒyƒAƒ}ƒbƒ`‚ÅƒgƒŠƒK
+		AD0.ADCSR.BIT.TRGE = 1;			// MTU2ã‹ã‚‰ã®ãƒˆãƒªã‚¬æœ‰åŠ¹
+		AD0.ADTSR.BIT.TRG0S = 1;		// TGRAã‚³ãƒ³ãƒšã‚¢ãƒãƒƒãƒã§ãƒˆãƒªã‚¬
 
 		// MTU2 ch1
-		MTU21.TCR.BIT.TPSC = 3;			// 1/64‘I‘ğ
-		MTU21.TCR.BIT.CCLR = 1;			// TGRA‚ÌƒRƒ“ƒyƒAƒ}ƒbƒ`‚ÅƒNƒŠƒA
+		MTU21.TCR.BIT.TPSC = 3;			// 1/64é¸æŠ
+		MTU21.TCR.BIT.CCLR = 1;			// TGRAã®ã‚³ãƒ³ãƒšã‚¢ãƒãƒƒãƒã§ã‚¯ãƒªã‚¢
 		MTU21.TGRA = 31250 - 1;			// 100ms
 
 		LCD_init();
 
-		MTU2.TSTR.BIT.CST0 = 1;			// MTU2 CH0ƒXƒ^[ƒg
-		MTU2.TSTR.BIT.CST1 = 1;			// MTU2 CH1ƒXƒ^[ƒg
+		MTU2.TSTR.BIT.CST0 = 1;			// MTU2 CH0ã‚¹ã‚¿ãƒ¼ãƒˆ
+		MTU2.TSTR.BIT.CST1 = 1;			// MTU2 CH1ã‚¹ã‚¿ãƒ¼ãƒˆ
 
 		me.x = me.y = 0;
 		for (i = 0; i < NMROF_ROCKS; i++)
@@ -271,17 +271,17 @@ void main(){
 
 		move_timing = new_timing = 0;
 	
-		//SW6‚ÅƒQ[ƒ€ŠJn
+		//SW6ã§ã‚²ãƒ¼ãƒ é–‹å§‹
 		if (SW6){
 			while (1) {
-				//SW5‚ª‰Ÿ‚³‚ê‚Ä...
+				//SW5ãŒæŠ¼ã•ã‚Œã¦...
 				if(SW5){
 					while(1){
-						//SW5‚ª—£‚³‚ê‚½‚ç
+						//SW5ãŒé›¢ã•ã‚ŒãŸã‚‰
 						if(!SW5){
-							//ˆê’â~’†
+							//ä¸€æ™‚åœæ­¢ä¸­
 							while(1){
-								//‚à‚¤ˆê“x‰Ÿ‚³‚ê‚½‚çÄŠJ
+								//ã‚‚ã†ä¸€åº¦æŠ¼ã•ã‚ŒãŸã‚‰å†é–‹
 								if(SW6){
 									break;
 								}
@@ -292,27 +292,33 @@ void main(){
 						}
 					}
 				}
-				//SW4‚ÅƒŠƒZƒbƒg
+				//SW4ã§ãƒªã‚»ãƒƒãƒˆ
 				if(SW4){
 					break;
 				}
 				if (MTU21.TSR.BIT.TGFA) {
-					// MTU2 ch1 ƒRƒ“ƒyƒAƒ}ƒbƒ`”­¶(100ms–ˆ)
-					MTU21.TSR.BIT.TGFA = 0;	// ƒtƒ‰ƒOƒNƒŠƒA
+					// MTU2 ch1 ã‚³ãƒ³ãƒšã‚¢ãƒãƒƒãƒç™ºç”Ÿ(100msæ¯)
+					MTU21.TSR.BIT.TGFA = 0;	// ãƒ•ãƒ©ã‚°ã‚¯ãƒªã‚¢
 
-					move_me(&me);			// ©•ªˆÚ“®
+					move_me(&me);			// è‡ªåˆ†ç§»å‹•
 					if (move_timing++ >= 2) {
 						move_timing = 0;
-						move_rock(rock);	// Šâ‚ğˆÚ“®
+						move_rock(rock);	// å²©ã‚’ç§»å‹•
 						if (new_timing-- <= 0) {
 							new_timing = rand() * 5 / (RAND_MAX + 1);
-							new_rock(rock);		// V‚µ‚¢Šâ‚ªoŒ»
+							new_rock(rock);		// æ–°ã—ã„å²©ãŒå‡ºç¾
 						}
 					}
 				}
-        //©•ª‚ÆŠâ‚ÌˆÊ’u”cˆ¬
+        //è‡ªåˆ†ã¨å²©ã®ä½ç½®æŠŠæ¡
         for (int i = 0; i < NMROF_ROCKS; i++) {
-          //Šâ‚É“–‚½‚Á‚½‚ç
+          //å²©ã«å½“ãŸã£ãŸã‚‰
           if (boom(me.x, me.y, rock[i].x, rock[i].y)) {
             point -= 1;
-            printf("awwww!
+            printf("awwww!\n");
+          }
+        }
+			}
+		}
+	}
+}
