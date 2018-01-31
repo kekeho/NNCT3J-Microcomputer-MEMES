@@ -171,6 +171,7 @@ void move_me(struct position *me)
 
 	if (old_position.y != me->y || old_position.x != me->x) {
 		// -- 移動したとき .. 古い表示を消す --
+		flag = False;
 		LCD_cursor(old_position.x, old_position.y);
 		LCD_putch(' ');
 	}
@@ -186,9 +187,10 @@ void move_rock(struct position rock[], struct position me)
 
 	for (i = 0; i < NMROF_ROCKS; i++) {
 		if (rock[i].active) {
-			if(rock[i].x == me.x && rock[i].y == me.y){
+			if(rock[i].x == me.x && rock[i].y == me.y && flag == False){
+				flag = True;
 				point -= 5;
-				printf("\rAwwww!\r");
+				printf("\r                             \rAwwww!\r");
 			}
 			// 画面上に岩が存在する
 			LCD_cursor(rock[i].x, rock[i].y);
@@ -282,6 +284,11 @@ void main(){
 
 		move_timing = new_timing = 0;
 		
+		LCD_cursor(5, 0);
+		LCD_putstr("INVADER");
+		LCD_cursor(6, 1);
+		LCD_putstr("GAME");
+		
 		//SW6でゲーム開始
 		if (SW6){
 			printf("START\n");
@@ -310,6 +317,12 @@ void main(){
 				}
 				//SW4でリセット
 				if(SW4){
+					LCD_init();
+					LCD_cursor(5, 0);
+					LCD_putstr("RESET");
+					LCD_cursor(6, 1);
+					LCD_putstr("SEE YA!");
+					wait_us(5000);
 					printf("\nSEE YA!\n");
 					break;
 				}
@@ -317,6 +330,9 @@ void main(){
 					//claer
 					printf("\nCLEAR!\n");
 					break;
+				} else if (point < 0){
+					printf("\nGAME OVER!\n");
+					break;	
 				}
 				if (MTU21.TSR.BIT.TGFA) {
 					// MTU2 ch1 コンペアマッチ発生(100ms毎)
