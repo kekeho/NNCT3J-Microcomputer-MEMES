@@ -1,0 +1,138 @@
+\documentclass[a4j]{jsarticle}
+\usepackage[dvipdfmx]{graphicx}
+\usepackage{float} %表
+%\usepackage{subfigure} %図を並べて表示しそれぞれのキャプションと全体のキャプションをつける
+\usepackage{itembkbx}
+\usepackage{eclbkbox} %改ページで枠を閉じない, ソースコードの枠
+\usepackage{moreverb}
+\usepackage{url} %URLをそのまま表示
+\usepackage{amsmath, amssymb} %数式
+%\usepackage{eqnarray} %数式, 複数行
+\usepackage{multirow} %表縦結合のとき上下中央揃え
+\usepackage{fancybox}%1行囲み
+\usepackage{ascmac}%複数行囲み
+\usepackage{listings,jlisting}
+\usepackage{comment}
+\usepackage{url}
+\lstset{%
+  % language={c++},
+  basicstyle={\small},%
+  identifierstyle={\small},%
+  commentstyle={\small\itshape},%
+  keywordstyle={\small\bfseries},%
+  ndkeywordstyle={\small},%
+  stringstyle={\small\ttfamily},
+  frame={tbrl}, %枠線
+  breaklines=true,
+  breakindent = 8.58pt,
+  columns=[l]{fullflexible},%
+  numbers=left,%
+  xrightmargin=0zw,%
+  xleftmargin=3zw,%
+  numberstyle={\scriptsize},%
+  stepnumber=1,
+  numbersep=1zw,%
+  lineskip=-0.0ex%
+}%ここまでプログラムリストを表示するやつ
+
+% \title {工学実験実習III第1回\\ファイルとコマンド引数(オプション)に対する操作}
+% \author {3年 24番 竹村太希}
+% \date{実験日時：2017年4月7日 〜 2016年4月14日
+% %西暦
+% \\ 提出日：\today}
+
+\begin{document}
+% %タイトル
+% \maketitle
+% \thispagestyle{empty}
+% \newpage
+% \setcounter{page}{1}
+% \pagestyle{plain}
+% %%
+% 
+% %==================== 目的 ====================%
+% \section{目的}
+% この実験の目的を以下に示す. 
+% \begin{itemize}
+% 	\item 目的1
+% 	\item 目的2
+% \end{itemize}
+% 
+% %==================== 原理 ====================%
+% \section{原理}
+% \begin{description}
+% \item[目的1]　\\
+% 目的1のあらまし
+% \item[目的2]
+% 目的2のあらまし
+% \end{description}
+% 
+% 
+% %==================== 実行環境 ====================%
+% \section{実行環境}
+% 今回の課題の実行環境を表\ref{t-1}に示す. 
+% 
+% %表１
+% \begin{table}[htbp]
+% \centering
+% \caption{課題の実行環境}
+% \label{t-1}
+% \begin{tabular}{|c||c|}
+% \hline
+%  CPU & Intel(R) Core(TM) i7-4510U CPU @2.0GHz x4 \\
+% \hline
+%  メモリ容量 & 8.00 GB \\
+% \hline
+%  OS & Ubuntu 16.10 \\
+% \hline
+%  コンパイラ & gcc version 6.2.0 20161005 (Ubuntu 6.2.0-5ubuntu12) \\
+% \hline
+%  グラフ作成ソフトウェア & gnuplot \\
+% \hline
+% \end{tabular}
+% \end{table}
+
+
+%==================== 課題1 ====================%
+\section{課題}
+
+\subsection{課題内容の補足}
+  クリア条件として, 岩をよけて画面から消えると+1点・岩に当たると-5点・10点でゲームクリア
+  という仕様にした. 
+
+
+
+\subsection{プログラムリスト}
+課題で作成したプログラムをソースコード\ref{s-1}に示す. 
+
+%コード1
+\lstinputlisting[language=c, label = s-1, caption=課題のソースコード]
+{memes_2012.c}
+
+\subsection{使用した機能の説明}
+今回使用した機能について, 技術的な説明を記す. MEMESサポートページ\url{http://memes.sakura.ne.jp/memes/?page_id=295}も合わせて参照されたし. 
+\subsubsection{スイッチ}
+  ゲームの開始・一時停止・リセットを実現するために, スイッチをSW4〜SW6まで使用した. そ
+  れぞれのスイッチが押されることにより
+  PD.DR.BIT.B16~PD.DR.BIT.B18の値が自動的に変化することを用いて制作を行った. 
+  
+\subsubsection{ジョイスティック}
+  上下左右にカーソルを移動するために使用した. 
+  A/D変換を行ってアナログジョイスティックの値をデジタル値として取得している. 
+  AD0を2チャンネルスキャンモードにし, AN0を上下の動きに, AN1を左右の動きに対応させた. 
+  
+\subsubsection{7セグメントLED}
+  仕様上1桁使うことができれば良いので, シンプルにPA.DR.BYTE.HL $|$= pointといった形で
+  表示させた. 
+
+
+
+\section{オリジナル機能}
+  実装したオリジナル機能について示す. 
+	\begin{itemize}
+    	\item 起動時にメッセージを表示
+    \end{itemize}
+
+
+
+\end{document}

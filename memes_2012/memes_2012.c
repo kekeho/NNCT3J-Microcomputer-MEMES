@@ -40,6 +40,8 @@ struct position {
   int active;
 };
 int point;
+
+//当たり判定フラグ
 int flag = 0;
 
 void wait_us(_UINT);
@@ -187,10 +189,11 @@ void move_rock(struct position rock[], struct position me)
 
 	for (i = 0; i < NMROF_ROCKS; i++) {
 		if (rock[i].active) {
+      //当たり判定
 			if(rock[i].x == me.x && rock[i].y == me.y && flag == False){
 				flag = True;
 				point -= 5;
-				printf("\r                             \rAwwww!\r");
+				printf("\r                             \rAwwww!\r"); //debug
 			}
 			// 画面上に岩が存在する
 			LCD_cursor(rock[i].x, rock[i].y);
@@ -284,6 +287,7 @@ void main(){
 
 		move_timing = new_timing = 0;
 		
+    //タイトル表示
 		LCD_cursor(5, 0);
 		LCD_putstr("INVADER");
 		LCD_cursor(6, 1);
@@ -302,7 +306,7 @@ void main(){
 						//SW5が離されたら
 						if(!SW5){
 							//一時停止中
-							printf("\r                       \rPAUSE");
+							printf("\r                       \rPAUSE"); //debug
 							while(1){
 								//もう一度押されたら再開
 								if(SW6){
@@ -328,10 +332,10 @@ void main(){
 				}
 				if(point > 9){
 					//claer
-					printf("\nCLEAR!\n");
+					printf("\nCLEAR!\n"); //debug
 					break;
 				} else if (point < 0){
-					printf("\nGAME OVER!\n");
+					printf("\nGAME OVER!\n"); //debug
 					break;	
 				}
 				if (MTU21.TSR.BIT.TGFA) {
